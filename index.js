@@ -4,9 +4,13 @@
 const { Client, Collection } = require("discord.js");
 const { readdirSync } = require("fs");
 const { join } = require("path");
-const { TOKEN, PREFIX } = require("./util/EvobotUtil");
+const { TOKEN, PREFIX } = require("./util/Util");
+const i18n = require("./util/i18n");
 
-const client = new Client({ disableMentions: "everyone" });
+const client = new Client({
+  disableMentions: "everyone",
+  restTimeOffset: 0
+});
 
 client.login(TOKEN);
 client.commands = new Collection();
@@ -66,7 +70,7 @@ client.on("message", async (message) => {
     if (now < expirationTime) {
       const timeLeft = (expirationTime - now) / 1000;
       return message.reply(
-        `please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`
+        i18n.__mf("common.cooldownMessage", { time: timeLeft.toFixed(1), name: command.name })
       );
     }
   }
@@ -78,6 +82,6 @@ client.on("message", async (message) => {
     command.execute(message, args);
   } catch (error) {
     console.error(error);
-    message.reply("There was an error executing that command.").catch(console.error);
+    message.reply(i18n.__("common.errorCommand")).catch(console.error);
   }
 });

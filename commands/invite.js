@@ -1,6 +1,8 @@
+const i18n = require("../util/i18n");
+
 module.exports = {
   name: "invite",
-  description: "Send bot invite link",
+  description: i18n.__("invite.description"),
   execute(message) {
     return message.member
       .send(
