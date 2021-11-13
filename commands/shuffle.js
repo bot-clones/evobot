@@ -1,13 +1,12 @@
-const { canModifyQueue } = require("../util/Util");
-const i18n = require("../util/i18n");
+const { canModifyQueue } = require("../util/EvobotUtil");
 
 module.exports = {
   name: "shuffle",
-  description: i18n.__("shuffle.description"),
+  description: "Shuffle queue",
   execute(message) {
     const queue = message.client.queue.get(message.guild.id);
-    if (!queue) return message.channel.send(i18n.__("shuffle.errorNotQueue")).catch(console.error);
-    if (!canModifyQueue(message.member)) return i18n.__("common.errorNotChannel");
+    if (!queue) return message.channel.send("There is no queue.").catch(console.error);
+    if (!canModifyQueue(message.member)) return;
 
     let songs = queue.songs;
     for (let i = songs.length - 1; i > 1; i--) {
@@ -16,6 +15,6 @@ module.exports = {
     }
     queue.songs = songs;
     message.client.queue.set(message.guild.id, queue);
-    queue.textChannel.send(i18n.__mf("shuffle.result", { author: message.author })).catch(console.error);
+    queue.textChannel.send(`${message.author} 🔀 shuffled the queue`).catch(console.error);
   }
 };

@@ -1,12 +1,8 @@
-const i18n = require("../util/i18n");
-
 module.exports = {
   name: "ping",
   cooldown: 10,
-  description: i18n.__("ping.description"),
+  description: "Show the bot's average ping",
   execute(message) {
-    message
-      .reply(i18n.__mf("ping.result", { ping: Math.round(message.client.ws.ping) }))
-      .catch(console.error);
+    message.reply(`📈 Average ping to API: ${Math.round(message.client.ws.ping)} ms`).catch(console.error);
   }
 };
